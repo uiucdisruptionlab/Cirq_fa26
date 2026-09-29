@@ -2197,13 +2197,35 @@ def test_to_text_diagram_custom_order(circuit_cls) -> None:
         use_unicode_characters=False,
     )
 
+    c2 = circuit_cls([cirq.Moment([cirq.CNOT(qa, qc)]), cirq.Moment([cirq.X(qb)])])
+    cirq.testing.assert_has_diagram(
+        c2,
+        """
+4: ---X-------
+      |
+3: ---|---X---
+      |
+2: ---@-------
+""",
+        qubit_order=[qc, qb, qa],
+        use_unicode_characters=False,
+    )
+
+
 @pytest.mark.parametrize('circuit_cls', [cirq.Circuit, cirq.FrozenCircuit])
 def test_to_test_diagram_moment_range(circuit_cls):
     qa = cirq.NamedQubit('2')
     qb = cirq.NamedQubit('3')
     qc = cirq.NamedQubit('4')
 
-    c = circuit_cls([cirq.Moment([cirq.X(qa), cirq.X(qb)]), cirq.Moment([cirq.X(qb), cirq.X(qc)]), cirq.Moment([cirq.X(qc), cirq.X(qa)]), cirq.Moment([cirq.X(qa), cirq.X(qc)])])
+    c = circuit_cls(
+        [
+            cirq.Moment([cirq.X(qa), cirq.X(qb)]),
+            cirq.Moment([cirq.X(qb), cirq.X(qc)]),
+            cirq.Moment([cirq.X(qc), cirq.X(qa)]),
+            cirq.Moment([cirq.X(qa), cirq.X(qc)]),
+        ]
+    )
     cirq.testing.assert_has_diagram(
         c,
         """
@@ -2213,7 +2235,7 @@ def test_to_test_diagram_moment_range(circuit_cls):
 
 4: ───X───X───
 """,
-        moment_range=(1,3)
+        moment_range=(1, 3),
     )
 
     cirq.testing.assert_has_diagram(
@@ -2225,7 +2247,7 @@ def test_to_test_diagram_moment_range(circuit_cls):
 
 4: ───X───
 """,
-        moment_range=(1,2)
+        moment_range=(1, 2),
     )
 
     cirq.testing.assert_has_diagram(
@@ -2237,7 +2259,7 @@ def test_to_test_diagram_moment_range(circuit_cls):
 
 4: ───
 """,
-        moment_range=(1,1)
+        moment_range=(1, 1),
     )
 
     cirq.testing.assert_has_diagram(
@@ -2249,10 +2271,10 @@ def test_to_test_diagram_moment_range(circuit_cls):
 
 4: ───X───X───X───
 """,
-        moment_range=(1,4)
+        moment_range=(1, 4),
     )
+    assert c.to_text_diagram() == c.to_text_diagram(moment_range=(0, len(c)))
 
-    assert c.to_text_diagram() == c.to_text_diagram(moment_range=(0,len(c)))
 
 @pytest.mark.parametrize('circuit_cls', [cirq.Circuit, cirq.FrozenCircuit])
 def test_overly_precise_diagram(circuit_cls) -> None:
