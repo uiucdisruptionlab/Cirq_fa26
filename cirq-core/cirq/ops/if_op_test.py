@@ -168,7 +168,7 @@ def test_diagram() -> None:
       ║
 1: ───╫───X───
       ║   ║
-a: ═══@═══^═══
+a: ═══V═══@═══
 """,
         use_unicode_characters=True,
     )
@@ -189,9 +189,9 @@ def test_diagram_multiple_conditions() -> None:
        ║║
 2: ────╫╫────X───
        ║║    ║
-a: ════@╬════^═══
+a: ════V╬════@═══
         ║    ║
-b: ═════@════^═══
+b: ═════V════@═══
       └──┘
 """,
         use_unicode_characters=True,
@@ -206,7 +206,7 @@ def test_diagram_sympy_condition() -> None:
         """
 0: ───X(If=s)───
       ║
-s: ═══^═════════
+s: ═══@═════════
 """,
         use_unicode_characters=True,
     )
@@ -220,9 +220,9 @@ def test_diagram_multiple_sympy_conditions() -> None:
         """
 0: ───X(If=s, t)───
       ║
-s: ═══^════════════
+s: ═══@════════════
       ║
-t: ═══^════════════
+t: ═══@════════════
 """,
         use_unicode_characters=True,
     )
