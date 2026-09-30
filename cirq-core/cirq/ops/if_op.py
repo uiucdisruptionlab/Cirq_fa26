@@ -198,7 +198,7 @@ class If(raw_types.Operation):
         control_label_count = 0
         if args.label_map is not None:
             control_label_count = len({k for c in self._conditions for k in c.keys})
-        wire_symbols = sub_info.wire_symbols + ('^',) * control_label_count
+        wire_symbols = sub_info.wire_symbols + ('@',) * control_label_count
         if control_label_count == 0 or any(
             not isinstance(c, value.KeyCondition) for c in self._conditions
         ):
