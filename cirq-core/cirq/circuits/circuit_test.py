@@ -2275,6 +2275,34 @@ def test_to_test_diagram_moment_range(circuit_cls):
     )
     assert c.to_text_diagram() == c.to_text_diagram(moment_range=(0, len(c)))
 
+@pytest.mark.parametrize('circuit_cls', [cirq.Circuit, cirq.FrozenCircuit])
+def test_to_test_diagram_qubit_subset(circuit_cls):
+    qa = cirq.NamedQubit('2')
+    qb = cirq.NamedQubit('3')
+    qc = cirq.NamedQubit('4')
+
+    c = circuit_cls(
+        [
+            cirq.Moment([cirq.X(qa), cirq.X(qb)]),
+            cirq.Moment([cirq.X(qb), cirq.X(qc)]),
+            cirq.Moment([cirq.X(qc), cirq.X(qa)]),
+            cirq.Moment([cirq.X(qa), cirq.X(qc)]),
+        ]
+    )
+    cirq.testing.assert_has_diagram(
+        c,
+        """
+2: ───X───
+
+3: ───X───
+""",
+        qubit_subset=[qa, qb],
+    )
+
+    # test empty subset prints nothing, order of subset shouldn't matter, moment filtering should work with it as well, test different qubit order functions and/or lists, make sure qubit order list that has more qubits than subset fails, make sure qubit subset with qubits not in circuit also fails
+
+    assert c.to_text_diagram() == c.to_text_diagram(qubit_subset=[qa, qb, qc])
+
 
 @pytest.mark.parametrize('circuit_cls', [cirq.Circuit, cirq.FrozenCircuit])
 def test_overly_precise_diagram(circuit_cls) -> None:
