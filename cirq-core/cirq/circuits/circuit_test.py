@@ -2213,7 +2213,7 @@ def test_to_text_diagram_custom_order(circuit_cls) -> None:
 
 
 @pytest.mark.parametrize('circuit_cls', [cirq.Circuit, cirq.FrozenCircuit])
-def test_to_test_diagram_moment_range(circuit_cls):
+def test_to_text_diagram_moment_range(circuit_cls):
     qa = cirq.NamedQubit('2')
     qb = cirq.NamedQubit('3')
     qc = cirq.NamedQubit('4')
@@ -2276,7 +2276,7 @@ def test_to_test_diagram_moment_range(circuit_cls):
     assert c.to_text_diagram() == c.to_text_diagram(moment_range=(0, len(c)))
 
 @pytest.mark.parametrize('circuit_cls', [cirq.Circuit, cirq.FrozenCircuit])
-def test_to_test_diagram_qubit_subset(circuit_cls):
+def test_to_text_diagram_qubit_subset(circuit_cls):
     qa = cirq.NamedQubit('2')
     qb = cirq.NamedQubit('3')
     qc = cirq.NamedQubit('4')
