@@ -23,11 +23,13 @@ def test_svg() -> None:
             cirq.PhasedXPowGate(exponent=0.123, phase_exponent=0.456).on(c),
             cirq.Z(a),
             cirq.measure(a, b, c, key='z'),
-            cirq.MatrixGate(np.eye(2)).on(a),
+            cirq.MatrixGate(np.eye(2)).on(a).with_classical_controls('z'),
         )
     )
     assert '<svg' in svg_text
     assert '</svg>' in svg_text
+    # a measurement's write into its classical bit terminates in an arrowhead
+    assert 'arrow' in svg_text
     # check text rendering fontsize
     # single letter X gate rendered at 18px
     assert re.search(r'<text[^>]*\bfont-size="18px[^>]*>X</text>', svg_text)

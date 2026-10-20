@@ -60,7 +60,7 @@ def test_classically_controlled_no_update_succeeds():
     Input:
     a: ───M───I───
           ║   ║
-    a: ═══@═══^═══
+    a: ═══V═══@═══
     """
     a = cirq.NamedQubit('a')
 
