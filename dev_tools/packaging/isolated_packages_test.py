@@ -56,12 +56,7 @@ def test_isolated_packages(cloned_env, module, tmp_path) -> None:
     assert result.returncode == 0, f"Failed to install {module.name}:\n{result.stderr}"
 
     result = shell_tools.run(
-        [
-            f"{env}/bin/pytest",
-            "--pyargs",
-            *module.top_level_packages,
-            "--ignore-glob=/*/cirq/contrib",
-        ],
+        f"{env}/bin/pytest ./{module.root} --ignore ./cirq-core/cirq/contrib".split(),
         capture_output=True,
         check=False,
     )
