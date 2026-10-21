@@ -181,16 +181,16 @@ class AbstractCircuit(abc.ABC):
         Args:
             moments: Moments of the circuit.
         """
-        
-    @classmethod    
+
+    @classmethod
     def from_ops(cls: type[CIRCUIT_TYPE], ops: Sequence[Sequence[cirq.Operation]], *, tags: Sequence[Hashable] = ()) -> CIRCUIT_TYPE:
-        """Creates a circuit from a layer of operations
+        """Creates a circuit from a layer of operations.
 
         Args:
-            ops (Sequence[Sequence[cirq.Operation]]): Layer of operations
+            ops (Sequence[Sequence[cirq.Operation]]): Layer of operations.
         """
         return cls._from_moments((Moment.from_ops(*layer) for layer in ops), tags=tags)
-    
+
 
     @property
     @abc.abstractmethod
