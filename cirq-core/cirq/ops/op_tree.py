@@ -82,15 +82,18 @@ def flatten_to_ops(root: OP_TREE) -> Iterator[Operation]:
     Raises:
         TypeError: root isn't a valid OP_TREE.
     """
-    stack = [root]
+    stack = [iter((root,))]
     while stack:
-        current = stack.pop()
-        if isinstance(current, Operation):
-            yield current
-        elif isinstance(current, Iterable) and not isinstance(current, str):
-            stack.extend(reversed(current))
+        for current in stack[-1]:
+            if isinstance(current, Operation):
+                yield current
+            elif isinstance(current, Iterable) and not isinstance(current, str):
+                stack.append(iter(current))
+                break
+            else:
+                _bad_op_tree(current)
         else:
-            _bad_op_tree(current)
+            stack.pop()
 
 
 def flatten_to_ops_or_moments(root: OP_TREE) -> Iterator[Operation | cirq.Moment]:
