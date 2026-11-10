@@ -217,7 +217,7 @@ class CircuitToQuantikz:
         show_parameters: bool = True,
         gate_name_map: dict[str, str] | None = None,
         float_precision_exps: int = 2,
-        float_precision_angles: int = 2,
+        float_precision_angles: int = 3,
         qubit_order: ops.QubitOrderOrList = ops.QubitOrder.DEFAULT,
     ):
         if not circuit:
@@ -372,6 +372,14 @@ class CircuitToQuantikz:
             A string representing the LaTeX name of the gate (e.g., "H",
             "Rx(0.5)", "CZ").
         """
+        angle_args = protocols.CircuitDiagramInfoArgs(
+            known_qubits=None,
+            known_qubit_count=None,
+            use_unicode_characters=True,
+            precision=self.float_precision_angles,
+            label_map=None,
+            transpose=False,
+        )
         gate_type = type(gate)
         if (simple_name := _SIMPLE_GATE_MAP.get(gate_type)) is not None:
             return simple_name
@@ -385,7 +393,7 @@ class CircuitToQuantikz:
             if not self.show_parameters:
                 return mapped_name
             # Use protocols directly
-            info = protocols.circuit_diagram_info(gate, default=NotImplemented)
+            info = protocols.circuit_diagram_info(gate, args=angle_args, default=NotImplemented)
             if info is not NotImplemented and info.wire_symbols:
                 s_diag = info.wire_symbols[0]
                 if (op_idx := s_diag.find("(")) != -1 and (cp_idx := s_diag.rfind(")")) > op_idx:

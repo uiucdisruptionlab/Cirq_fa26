@@ -78,6 +78,7 @@ def render_circuit(
     show_parameters: bool = True,
     gate_name_map: dict[str, str] | None = None,
     float_precision_exps: int = 2,
+    float_precision_angles: int = 3,
     qubit_order: ops.QubitOrderOrList = ops.QubitOrder.DEFAULT,
     **kwargs: Any,
 ) -> str | Image | None:
@@ -238,6 +239,7 @@ def render_circuit(
             "show_parameters": show_parameters,
             "gate_name_map": gate_name_map,
             "float_precision_exps": float_precision_exps,
+            "float_precision_angles": float_precision_angles,
             "qubit_order": qubit_order,
             **kwargs,  # Existing kwargs are merged, but explicit args take precedence
         }
